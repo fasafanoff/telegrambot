@@ -1,3 +1,4 @@
+from Plots import Plots
 from apikey import APIKEY
 from datetime import date
 from utils import load_obj, save_obj
@@ -19,49 +20,45 @@ try:
 except:
     chats = Chats()
 
-@bot.message_handler(commands=['gdaily'])
+@bot.message_handler(commands=['gall'])
 def graph(message):
     pass 
 
 
-@bot.message_handler(commands=['gall'])
+@bot.message_handler(commands=['gdaily'])
 def graph(message):
-
 
     chat_id = message.chat.id
 
     
-    user_id = message.from_user.id
+
     chat = chats.get_chat(chat_id)
 
     daily = chat.get_daily()
 
-    
 
-    x = []
 
-    y = []
-    for day in daily:
-        x.append(date.fromtimestamp(day))
+
+    plots = Plots()
+
+    for day_id in daily.daily:        
+        day = daily.get_day(day_id)
         
-        y.append(daily[day].get_messages(user_id))  
+        for user_id in day.chat:
+
+            plots.push(day.get_user(user_id),date.fromtimestamp(day_id),day.get_messages(user_id))
 
 
-   
-    
-    
-    # plotting the points 
-    plt.plot(x, y)
-    
-    # naming the x axis
-    plt.xlabel('day')
-    # naming the y axis
-    plt.ylabel('number of messages')
-    
-   
+
+    fig = plt.figure()
+
+    axes = fig.add_axes([0, 0, 1, 1])
+
+    plots.plot(axes)
     
 
     plt.savefig('plot.png')
+    plt.close()
 
     img = open('plot.png', 'rb')
     bot.send_photo(chat_id,img)
@@ -74,6 +71,9 @@ def graph(message):
 
 @bot.message_handler(commands=['stats'])
 def send_stats(message):
+
+    if(message.text == "") :
+        return
 
     chat_id = message.chat.id
 

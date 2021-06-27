@@ -24,4 +24,4 @@ class Chat:
         return str(self.alltime)
 
     def get_daily(self):
-        return self.daily.daily
+        return self.daily

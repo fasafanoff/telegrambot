@@ -8,7 +8,7 @@ class Daily:
         self.daily = {}
 
     
-
+    
 
     def inc_user(self,user,message_date):
 
@@ -21,5 +21,8 @@ class Daily:
 
 
         print(self.daily)
+
+    def get_day(self,day_id)->ChatInfo:
+        return self.daily[day_id]
 
     
