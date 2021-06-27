@@ -1,3 +1,4 @@
+from apikey import APIKEY
 from datetime import date
 from utils import load_obj, save_obj
 from Chats import Chats
@@ -8,7 +9,7 @@ import matplotlib.pyplot as plt
 
 
 
-bot = telebot.TeleBot("1887909958:AAHad8fc4AAwUsylyYQkW19Z3E-Eyp8iss0", parse_mode=None)
+bot = telebot.TeleBot(APIKEY, parse_mode=None)
 
 
 
